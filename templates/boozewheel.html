@@ -1,0 +1,130 @@
+<!doctype html/>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css">
+<script src="wheel.js"></script>
+<script src="storejson2.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+<!--script src="jquery-1.7.1.js"></script>
+<script src="jquery-1.7.2.min.js"></script>
+<script src="jquery-ui-1.8.21.custom.min.js"></script-->
+<style type="text/css">
+#siteMenuBar
+{
+position: fixed;
+top: 0px;
+left: 0px;
+width: 100%;
+height: 30px;
+margin-top: -27px;
+}
+ 
+#siteMenuBar > #menuContainer
+{
+margin-left: auto;
+margin-right: auto;
+width: 100%;
+height: 25px;
+padding-top: 5px;
+}
+ 
+#siteMenuBar ul
+{
+float: right;
+list-style-type: none;
+margin: 0;
+padding: 0;
+font-size: 0.9em;
+}
+ 
+#siteMenuBar li
+{
+display: inline-block;
+margin: 0;
+padding: 0 5px 0 5px;
+margin-right: 10px;
+}
+ 
+#siteMenuBar ul:first-child
+{
+float: left;
+margin-left: 10px;
+}
+</style>
+</head>
+<body>
+
+<div id="errorOutput" style="font: red"></div>
+<!--div id="hiddenFields">
+<input type="hidden"  id="postBack" name="postBack" value="false" />
+</div-->
+<div id="canvasLayer" style="">
+<canvas id="canvas" width="500" height="500">
+</canvas>
+<script type="text/javascript">
+
+var boozeActionList;
+
+if(sessionStorage && sessionStorage.getItem("wheelList"))
+{
+	boozeActionList = JSON.parse(sessionStorage.getItem("wheelList"));
+}
+else
+{
+	var boozeActionList = ["Beer", "Mix", "BlackHammer Beer", "BlackHammer Mix",
+						 "BoozeLord Beer", "BoozeLord Mix", "Penalty", "Major Penalty"];						 
+}
+
+drawRouletteWheel(boozeActionList);
+
+
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#createlistnemikor').each(function() {
+		var $link = $(this);
+		var $dialog = $('<div></div>')
+			.load($link.attr('href') + '#hellobooze')
+			.dialog({
+				autoOpen: false,
+				title: $link.attr('title'),
+				width: 500,
+				height: 300
+			});
+
+		$link.click(function() {
+			$dialog.dialog('open');
+
+			return false;
+		});
+	});
+});
+</script>
+</div>
+<div id="siteMenuBar" class="ui-widget">
+<div id="menuContainer" class="ui-widget-header">
+<ul>
+<li><a href="#">Administration</a></li>
+<li><a href="#">Design Guidelines</a></li>
+<li><a href="#">Other Link</a></li>
+</ul>
+<ul>
+<li><a href="#">Preferences?</a></li>
+<li><a href="#">Logout</a></li>
+</ul>
+</div>
+</div>
+<div id="controlsLayer">
+<input type="button" value="spin" onclick="spin(boozeActionList, boozeActionList.length);"  />
+<input type="button" value="shuffle" onclick="shuffleList(boozeActionList);"/>
+</div>
+
+<div id="configuration">
+<!--a id="createlistlink" href="javascript:OpenJQueryDialog('createlist.html');">Create my List...</a><br/-->
+<a id="createlistnemikor" href="createlist.html">Create my List...Nemikor</a><br/>
+<!--a id="page-help" href="createlist.html" onclick="window.open(this.href, 'popupwindow', 'width=500,height=300'); return false;">Create my List...old school</a-->
+</div>
+<!--div id="createlist" title="Dialog Title" style="height: 400 width: 300"/-->
+</body>
+</html>
