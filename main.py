@@ -28,6 +28,14 @@ from mako.template import Template
 
 import webapp2
 
+class CreateListHandler(webapp2.RequestHandler):
+	def get(self):
+		template = self.load_template()
+		self.response.out.write(template)
+	
+	def load_template(self):
+		template = Template(filename='./templates/createlist.html')
+		return template.render()
 
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
@@ -43,7 +51,8 @@ class MainHandler(webapp2.RequestHandler):
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 app = webapp2.WSGIApplication([('/signup', SignUpHandler),
                                ('/login', LoginHandler),
-                               ('/logout', LogoutHandler),                                                           
+                               ('/logout', LogoutHandler),  
+                               ('/createlist', CreateListHandler),                                                       
                                ('/', MainHandler),
                                ],
                               debug=True)

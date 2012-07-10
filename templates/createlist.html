@@ -1,6 +1,7 @@
 <html>
 <head>
-<script src="jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/templates/createlist.css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
 <script language="javascript">
  $(document).ready(function() {
    $("#hellobooze").click(function() {
@@ -8,10 +9,18 @@
    });
  });
 </script>
+<title>Create your custom booze list!</title>
 </head>
 <body>
+<center>
 <div id="boozelist">
-<br/><a id="hellobooze" href="">Link</a>
+<input type="text" value="" />
+
 </div>
+<div id="controlsLayer">
+<input type="button" value="spin" onclick="spin(boozeActionList, boozeActionList.length);"  />
+<input type="button" value="shuffle" onclick="shuffleList(boozeActionList);"/>
+</div>
+</center>
 </body>
 </html>

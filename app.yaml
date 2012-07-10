@@ -15,8 +15,11 @@ handlers:
     
 - url: /templates/storejson2\.min\.js
   static_files: ./templates/storejso2.min.js
-  upload: ./templates/storejso2.min.js
-  
+  upload: ./templates/storejso2.min.js\
+ 
+- url: /templates/createlist\.css
+  static_files: ./templates/createlist.css
+  upload: ./templates/createlist.css
      
 - url: /.*
   script: main.app
