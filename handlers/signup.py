@@ -7,7 +7,7 @@ import random
 import string
 
 from google.appengine.ext import db
-from wikidata import *
+from dataobjects import *
 
 import sys
 sys.path.append("../db") 

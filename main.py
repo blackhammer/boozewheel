@@ -18,29 +18,32 @@
 import sys
 sys.path.append("./handlers")
 sys.path.append("./templates")
-sys.path.append("./db") 
+sys.path.append("./db")
+sys.path.append("./mako")
+sys.path.append("./markupsafe")   
 
-from signup.signup import *
-from wiki.newpage import *
-from wiki.page import *
+from handlers.signup import *
+from mako.template import Template
+
 
 import webapp2
-#from unit2.hw2q1.bhrot13 import *
 
 
 class MainHandler(webapp2.RequestHandler):
-    def get(self):    	
-      	self.response.out.write("Hello, Udacity!")
-
+	def get(self):
+		template = self.load_template()
+		self.response.out.write(template)
+	
+	def load_template(self):
+		template = Template(filename='./templates/boozewheel.html')
+		return template.render()
+    	
 
                               
 PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
 app = webapp2.WSGIApplication([('/signup', SignUpHandler),
                                ('/login', LoginHandler),
-                               ('/logout', LogoutHandler),
-                               ('/_edit' + PAGE_RE, NewPageHandler),
-                               ('/_history' + PAGE_RE, PageHistoryHandler),
-                               (PAGE_RE, WikiPageHandler),
+                               ('/logout', LogoutHandler),                                                           
                                ('/', MainHandler),
                                ],
                               debug=True)

@@ -1,4 +1,4 @@
-application: bhcs253final
+application: boozewheel
 version: 1
 runtime: python27
 api_version: 1
@@ -7,10 +7,16 @@ threadsafe: yes
 handlers:
 - url: /favicon\.ico
   static_files: favicon.ico
-  upload: favicon\.ico  
-   
-- url: /flush.*
-  script: .wiki.newpost.app  
+  upload: favicon\.ico 
+  
+- url: /templates/wheel\.js
+  static_files: ./templates/wheel.js
+  upload: ./templates/wheel.js
+    
+- url: /templates/storejson2\.min\.js
+  static_files: ./templates/storejso2.min.js
+  upload: ./templates/storejso2.min.js
+  
      
 - url: /.*
   script: main.app
