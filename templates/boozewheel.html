@@ -61,24 +61,20 @@ margin-left: 10px;
 </canvas>
 <script type="text/javascript">
 
-var boozeActionList = ["Penalty", "Beer", "Mixed", "Shot","Beer", "Mixed", "Beer", "Major Penalty"];
+	var boozeActionList = ["Penalty", "Beer", "Mixed", "Shot","Beer", "Mixed", "Beer", "Major Penalty"];
 
-if(sessionStorage)
-{
-	if(sessionStorage.getItem("wheelList"))
+	if(sessionStorage)
 	{
-		boozeActionList = JSON.parse(sessionStorage.getItem("wheelList"));
+		if(sessionStorage.getItem("wheelList"))
+		{
+			boozeActionList = JSON.parse(sessionStorage.getItem("wheelList"));
+		}
+		else
+		{				
+			sessionStorage.setItem("wheelList", JSON.stringify(boozeActionList));			 
+		}
 	}
-	else
-	{				
-		sessionStorage.setItem("wheelList", JSON.stringify(boozeActionList))					 
-	}
-}
-
-
-drawRouletteWheel(boozeActionList);
-
-
+	drawRouletteWheel(boozeActionList);
 </script>
 <!--<script type="text/javascript">
 $(document).ready(function() {
@@ -117,7 +113,9 @@ $(document).ready(function() {
 </div>
 <div id="controlsLayer">
 <input type="button" value="spin" onclick="spin(boozeActionList, boozeActionList.length);"  />
+<br/>
 <input type="button" value="shuffle" onclick="shuffleList(boozeActionList);"/>
+<input type="button" value="save current" onclick="shuffleList(boozeActionList);"/>
 </div>
 <div id="configuration">
 <br/>

@@ -11,9 +11,9 @@
 		
 		for(i=0; i< boozeActionList.length; i=i+1)
 		{
-			var item = "item" + (i+1)
+			var item = '#item' + (i+1)
 			
-			$(item).value = boozeActionList[i]			
+			$(item).val(boozeActionList[i])			
 		}
 	}   
  });
@@ -26,14 +26,14 @@
 <body>
 <h1>Edit your booze list</h1>
 <div id="boozelist">
-<span class="label">Booze Item #1</span><input name="item1"type="text" value="" /><br/>
-<span class="label">Booze Item #2</span><input name="item2"type="text" value="" /><br/>
-<span class="label">Booze Item #3</span><input name="item3"type="text" value="" /><br/>
-<span class="label">Booze Item #4</span><input name="item4"type="text" value="" /><br/>
-<span class="label">Booze Item #5</span><input name="item5"type="text" value="" /><br/>
-<span class="label">Booze Item #6</span><input name="item6"type="text" value="" /><br/>
-<span class="label">Booze Item #7</span><input name="item7"type="text" value="" /><br/>
-<span class="label">Booze Item #8</span><input name="item8"type="text" value="" /><br/>
+<span class="label">Booze Item #1</span><input name="item1" id="item1" type="text" value="" /><br/>
+<span class="label">Booze Item #2</span><input name="item2" id="item2" type="text" value="" /><br/>
+<span class="label">Booze Item #3</span><input name="item3" id="item3" type="text" value="" /><br/>
+<span class="label">Booze Item #4</span><input name="item4" id="item4" type="text" value="" /><br/>
+<span class="label">Booze Item #5</span><input name="item5" id="item5" type="text" value="" /><br/>
+<span class="label">Booze Item #6</span><input name="item6" id="item6" type="text" value="" /><br/>
+<span class="label">Booze Item #7</span><input name="item7" id="item7" type="text" value="" /><br/>
+<span class="label">Booze Item #8</span><input name="item8" id="item8" type="text" value="" /><br/>
 </div>
 <div id="controlsLayer" align="right">
 <input type="button" value="Cancel" onclick="spin(boozeActionList, boozeActionList.length);"  />
