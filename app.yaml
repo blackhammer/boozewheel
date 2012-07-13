@@ -12,10 +12,14 @@ handlers:
 - url: /templates/wheel\.js
   static_files: ./templates/wheel.js
   upload: ./templates/wheel.js
+  
+- url: /templates/jquery-1\.7\.2\.min\.js
+  static_files: ./templates/jquery-1.7.2.min.js
+  upload: ./templates/jquery-1.7.2.min.js
     
 - url: /templates/storejson2\.min\.js
-  static_files: ./templates/storejso2.min.js
-  upload: ./templates/storejso2.min.js\
+  static_files: ./templates/storejson2.min.js
+  upload: ./templates/storejson2.min.js
  
 - url: /templates/createlist\.css
   static_files: ./templates/createlist.css

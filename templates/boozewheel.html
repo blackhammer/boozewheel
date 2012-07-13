@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css">
 <script src="/templates/wheel.js"></script>
 <script src="/templates/storejson2.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript" src="/templates/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
 <style type="text/css">
 #siteMenuBar
@@ -61,17 +61,20 @@ margin-left: 10px;
 </canvas>
 <script type="text/javascript">
 
-var boozeActionList;
+var boozeActionList = ["Penalty", "Beer", "Mixed", "Shot","Beer", "Mixed", "Beer", "Major Penalty"];
 
-if(sessionStorage && sessionStorage.getItem("wheelList"))
+if(sessionStorage)
 {
-	boozeActionList = JSON.parse(sessionStorage.getItem("wheelList"));
+	if(sessionStorage.getItem("wheelList"))
+	{
+		boozeActionList = JSON.parse(sessionStorage.getItem("wheelList"));
+	}
+	else
+	{				
+		sessionStorage.setItem("wheelList", JSON.stringify(boozeActionList))					 
+	}
 }
-else
-{
-	var boozeActionList = ["Beer", "Mix", "BlackHammer Beer", "BlackHammer Mix",
-						 "BoozeLord Beer", "BoozeLord Mix", "Penalty", "Major Penalty"];						 
-}
+
 
 drawRouletteWheel(boozeActionList);
 
@@ -118,7 +121,7 @@ $(document).ready(function() {
 </div>
 <div id="configuration">
 <br/>
-<a id="createlist" href="createlist">Create my List...Nemikor</a><br/>
+<a id="createlist" href="createlist">Edit my List</a><br/>
 </div>
 </center>
 </body>
