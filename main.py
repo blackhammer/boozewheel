@@ -20,8 +20,9 @@ sys.path.append("./handlers")
 sys.path.append("./templates")
 sys.path.append("./db")
 sys.path.append("./mako")
-sys.path.append("./markupsafe")   
+sys.path.append("./markupsafe") 
 
+import os  
 from handlers.signup import *
 from mako.template import Template
 
@@ -34,7 +35,8 @@ class CreateListHandler(webapp2.RequestHandler):
 		self.response.out.write(template)
 	
 	def load_template(self):
-		template = Template(filename='./templates/createlist.html')
+		path = os.path.join(os.path.dirname(__file__), 'pages/createlist.html')
+		template = Template(filename=path)
 		return template.render()
 
 class MainHandler(webapp2.RequestHandler):
@@ -43,7 +45,8 @@ class MainHandler(webapp2.RequestHandler):
 		self.response.out.write(template)
 	
 	def load_template(self):
-		template = Template(filename='./templates/boozewheel.html')
+		path = os.path.join(os.path.dirname(__file__), 'pages/boozewheel.html')
+		template = Template(filename=path)
 		return template.render()
     	
 
