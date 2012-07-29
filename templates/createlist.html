@@ -17,6 +17,33 @@
 		}
 	}   
  });
+ 
+ function saveList()
+ {
+ 	//1.Save list in session storage
+ 	//2.Confirm in dialog
+ 	//3. On dialog close, redirect to home
+ 	if(sessionStorage)
+	{	
+ 		var boozeActionList = new Array();
+ 	
+ 		for(i=0; i< 8; i=i+1)
+		{
+			var item = '#item' + (i+1)
+			
+			boozeActionList[i] = $(item).val()			
+		}							
+		sessionStorage.setItem("wheelList", JSON.stringify(boozeActionList));
+		
+		alert("List saved!");		
+	}
+	else
+	{
+		alert("Your browser does not seem to support local storage...");
+	}
+	
+	parent.location = '/';
+ }
 </script>
 <script type="text/javascript">
 	
@@ -37,7 +64,7 @@
 </div>
 <div id="controlsLayer" align="right">
 <input type="button" value="Cancel" onclick="parent.location='/'"  />
-<input type="button" value="Save List" onclick="shuffleList(boozeActionList);"/>
+<input type="button" value="Save List" onclick="saveList();"/>
 </div>
 </body>
 </html>

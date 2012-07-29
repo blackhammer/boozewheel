@@ -4,7 +4,7 @@ runtime: python27
 api_version: 1
 threadsafe: yes
 
-handlers:
+handlers:  
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico 
@@ -24,6 +24,9 @@ handlers:
 - url: /templates/createlist\.css
   static_files: ./templates/createlist.css
   upload: ./templates/createlist.css
+  
+- url: /templates
+  static_dir: ./templates
      
 - url: /.*
   script: main.app
