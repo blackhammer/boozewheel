@@ -1,0 +1,117 @@
+#!/usr/bin/env python
+
+from google.appengine.ext import db
+from google.appengine.api import memcache
+from datetime import *
+import webapp2
+import logging
+
+
+class WikiDataManager():
+	def __init__(self):
+		pass
+		
+	def page_list(self, update = False):
+		key_pages = 'wiki_pages'
+		key_pages_time = 'wiki_pages_time'
+		entries = memcache.get(key_pages)
+		
+		if entries is not None and not update:
+			lastupdated = memcache.get(key_pages_time)
+			return entries, lastupdated
+		else:						
+			entries = db.GqlQuery("SELECT * from WikiPage ORDER BY Created DESC")			
+							
+			entries = list(entries)
+			lastupdated = datetime.now()
+			memcache.set(key_pages, entries)	
+			memcache.set(key_pages_time, lastupdated)
+					
+			return entries, lastupdated
+	def page_history(self, pagename):
+		pages, updated = self.page_list()
+
+		pagehistory = []
+		
+		for page in pages:
+			if page.PageName == pagename:
+				pagehistory.append(page)
+		return pagehistory, updated
+			
+	def get_page(self, pagename, update = False):
+		key_post = "single_post_%s" % pagename
+		key_time = "single_post_time_%s" % pagename
+		
+		entry = memcache.get(key_post)
+		
+		if entry is not None and not update:
+			#logging.error("cacheHit")
+			lastupdated = memcache.get(key_time)
+			return entry, lastupdated
+		else:
+			#logging.error("gqlQueried: %s" % pagename)
+			entry = db.GqlQuery("SELECT * from WikiPage WHERE PageName = :1 ORDER BY Version DESC",pagename)
+			#entry = list(entry)						
+			if entry.count() >= 1:
+				entry = entry[0]
+				lastupdated = datetime.now()
+				memcache.set(key_post,entry)
+				memcache.set(key_time,lastupdated)
+				return entry, lastupdated
+			else:
+				return None, None
+				
+	def get_page_version(self, pagename, version):
+		key_post_version = "version_post_%s_%s" % (pagename, version)
+		key_version_time = "version_post_time%s_%s" % (pagename, version)
+				
+		#logging.error("page: %s,version: %s" % (pagename, version))
+		entry = memcache.get(key_post_version)
+		
+		if entry is not None:
+			#logging.error("cacheHit")
+			lastupdated = memcache.get(key_version_time)
+			return entry, lastupdated
+		else:
+			entry = db.GqlQuery("SELECT * FROM WikiPage WHERE PageName=:1 AND Version=:2",pagename, int(version))
+			#logging.error("gqlQueried")
+			if entry is not None and entry.count()>0:
+				entry = entry[0]
+				lastupdated = datetime.now()
+				memcache.set(key_post_version, entry)
+				memcache.set(key_version_time, lastupdated)
+				return entry, lastupdated
+			else:
+				return None, None
+			
+			
+	def add_page(self, pagename, content):		
+		version = self.page_exists(pagename)
+		if version is None:
+			newpost = WikiPage(PageName = pagename, Content = content,Version = 1)
+			newpost.put()
+		else:
+			newpage = WikiPage(PageName = pagename, Content = content, Version = version+1)
+			newpage.put()			
+	
+	def page_exists(self, pagename):
+		pages, lastupdated = self.page_list()		
+		for page in pages:
+			if page.PageName == pagename:					
+				return page.Version
+		return None
+			
+			
+class WikiPage(db.Model):
+	PageName	= db.StringProperty(required=True)
+	Content 	= db.TextProperty(required=True)
+	Created 	= db.DateTimeProperty(auto_now_add = True)
+	Version 	= db.IntegerProperty(required=True)
+	
+class User(db.Model):
+	UserName = db.StringProperty(required=True)
+	Password = db.StringProperty(required=True)
+	Email = db.StringProperty(required=False)
+	Salt = db.StringProperty(required=True)
+	Create = db.DateTimeProperty(auto_now_add = True)
+	
