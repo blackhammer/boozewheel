@@ -1,125 +1,20 @@
 #!/usr/bin/env python
 
+import os  
 import webapp2
 import re
 import hashlib
 import random
 import string
 
+from mako.template import Template
+
 from google.appengine.ext import db
 from dataobjects import *
 
 import sys
 sys.path.append("../db") 
-
-loginform="""
-<html>
-	<head>
-		<title>Login</title>
-		 <style type="text/css">
-      .label {text-align: right}
-      .error {color: red}
-    </style>
-	</head>
-	<body>
-		<h2>Login</h2>
-		<form method="post">
-      <table>
-        <tr>
-          <td class="label">
-            Username
-          </td>
-          <td>
-            <input type="text" name="username" value="%(username)s">
-          </td>          
-        </tr>
-        <tr>
-          <td class="label">
-            Password
-          </td>
-          <td>
-            <input type="password" name="password" value="">
-          </td>          
-        </tr>
-        <tr>
-        	 <td class="error">
-        	 	%(loginerror)s
-        	 </td>
-        	</tr>
-      </table>
-      <input type="submit" value="login">
-    </form>
-	</body>
-</html>
-"""
-
-signupform="""
-<html>
-  <head>
-    <title>Sign Up</title>
-    <style type="text/css">
-      .label {text-align: right}
-      .error {color: red}
-    </style>
-  </head>
-  <body>
- <h2>Signup</h2>
-    <form method="post">
-      <table>
-        <tr>
-          <td class="label">
-            Username
-          </td>
-          <td>
-            <input type="text" name="username" value="%(username)s">
-          </td>
-          <td class="error">
-            %(usererror)s
-          </td>
-        </tr>
-
-        <tr>
-          <td class="label">
-            Password
-          </td>
-          <td>
-            <input type="password" name="password" value="">
-          </td>
-          <td class="error">
-            %(pwerror)s
-          </td>
-        </tr>
-
-        <tr>
-          <td class="label">
-            Verify Password
-          </td>
-          <td>
-            <input type="password" name="verify" value="">
-          </td>
-          <td class="error">
-            %(pwmatcherror)s
-          </td>
-        </tr>
-        <tr>
-          <td class="label">
-            Email (optional)
-          </td>
-          <td>
-            <input type="text" name="email" value="%(email)s">
-          </td>
-          <td class="error">
-            %(emailerror)s
-          </td>
-        </tr>
-      </table>
-      <input type="submit">
-    </form>
-	</body>
-</html>
-"""
-
-
+sys.path.append("../templates")
 
 class SignUpHandler(webapp2.RequestHandler):
 	USER_RE 		= re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
@@ -127,8 +22,11 @@ class SignUpHandler(webapp2.RequestHandler):
 	EMAIL_RE 	= re.compile(r"^[\S]+@[\S]+\.[\S]+$")
 	
 	def write_form(self,user="",usererror="",pwerror="",pwmatcherror="",email="",emailerror=""):
-		self.response.out.write(signupform % {"username":user,"usererror":usererror,"pwerror":pwerror,\
-		"pwmatcherror":pwmatcherror,"email":email,"emailerror":emailerror})
+		path = os.path.join(os.path.dirname(__file__), '../pages/signup.html')
+		template = Template(filename=path)
+		output = template.render(username=user,usererror=usererror,pwerror=pwerror,\
+			pwmatcherror=pwmatcherror,email=email,emailerror=emailerror)
+		self.response.out.write(output)
 		
 	
 	def get(self):
@@ -287,7 +185,10 @@ class LoginHandler(webapp2.RequestHandler):
 			return None
 		
 	def write_form(self,user="",loginerror=""):
-		self.response.out.write(loginform % {"username":user,"loginerror":loginerror})
+		path = os.path.join(os.path.dirname(__file__), '../pages/login.html')
+		template = Template(filename=path)
+		output = template.render(username=user,loginerror=loginerror)
+		self.response.out.write(output)
 		
 		
 class LogoutHandler(webapp2.RequestHandler):
